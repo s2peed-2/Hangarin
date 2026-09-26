@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block title %}Home{% endblock %}
+{% block content %}
+<h4 class="mb-3">Dashboard</h4>
+<div class="row g-3">
+    <div class="col-md-3">
+        <div class="card text-bg-warning"><div class="card-body">
+            <p class="mb-1">Total Tasks</p><h4>{{ total_tasks }}</h4>
+        </div></div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-bg-success"><div class="card-body">
+            <p class="mb-1">Completed</p><h4>{{ tasks_completed }}</h4>
+        </div></div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-bg-danger"><div class="card-body">
+            <p class="mb-1">Pending</p><h4>{{ tasks_pending }}</h4>
+        </div></div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-bg-primary"><div class="card-body">
+            <p class="mb-1">In Progress</p><h4>{{ tasks_in_progress }}</h4>
+        </div></div>
+    </div>
+</div>
+<div class="row g-3 mt-1">
+    <div class="col-md-3">
+        <div class="card"><div class="card-body">
+            <p class="mb-1">Categories</p><h4>{{ total_categories }}</h4>
+        </div></div>
+    </div>
+    <div class="col-md-3">
+        <div class="card"><div class="card-body">
+            <p class="mb-1">Priorities</p><h4>{{ total_priorities }}</h4>
+        </div></div>
+    </div>
+    <div class="col-md-3">
+        <div class="card"><div class="card-body">
+            <p class="mb-1">Created This Month</p><h4>{{ tasks_created_this_month }}</h4>
+        </div></div>
+    </div>
+</div>
+{% endblock %}

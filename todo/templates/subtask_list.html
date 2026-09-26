@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block title %}Subtasks{% endblock %}
+{% block content %}
+<h4>Subtasks</h4>
+
+<form method="get" class="row g-2 align-items-center mb-3">
+    <div class="col-auto">
+        <input type="text" name="q" value="{{ request.GET.q }}" placeholder="Search subtasks..." class="form-control">
+    </div>
+    <div class="col-auto">
+        <select name="sort_by" class="form-control">
+            <option value="parent_task__title" {% if request.GET.sort_by == "parent_task__title" %}selected{% endif %}>Parent Task</option>
+            <option value="title" {% if request.GET.sort_by == "title" %}selected{% endif %}>Title</option>
+            <option value="status" {% if request.GET.sort_by == "status" %}selected{% endif %}>Status</option>
+        </select>
+    </div>
+    <div class="col-auto">
+        <button type="submit" class="btn btn-primary">Apply</button>
+    </div>
+</form>
+
+<table class="table table-striped">
+    <thead><tr><th>Title</th><th>Status</th><th>Parent Task</th></tr></thead>
+    <tbody>
+        {% for subtask in subtasks %}
+        <tr>
+            <td>{{ subtask.title }}</td>
+            <td>{{ subtask.status }}</td>
+            <td>{{ subtask.parent_task.title }}</td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="3">No subtasks found.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% if is_paginated %}
+<nav><ul class="pagination">
+    {% if page_obj.has_previous %}<li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}&q={{ request.GET.q }}&sort_by={{ request.GET.sort_by }}">Previous</a></li>{% endif %}
+    <li class="page-item disabled"><span class="page-link">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span></li>
+    {% if page_obj.has_next %}<li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}&q={{ request.GET.q }}&sort_by={{ request.GET.sort_by }}">Next</a></li>{% endif %}
+</ul></nav>
+{% endif %}
+{% endblock %}

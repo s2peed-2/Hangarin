@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Hangarin{% endblock %}</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3">
+    <a class="navbar-brand" href="{% url 'home' %}">Hangarin</a>
+    <div class="navbar-nav">
+        <a class="nav-link" href="{% url 'task-list' %}">Tasks</a>
+        <a class="nav-link" href="{% url 'subtask-list' %}">Subtasks</a>
+        <a class="nav-link" href="{% url 'category-list' %}">Categories</a>
+        <a class="nav-link" href="{% url 'priority-list' %}">Priorities</a>
+        <a class="nav-link" href="{% url 'note-list' %}">Notes</a>
+    </div>
+
+    <span class="navbar-text text-white ms-auto me-3">
+        {% if request.user.is_authenticated %}
+            {{ request.user.username }}
+            <a href="{% url 'account_logout' %}" class="text-white ms-2">Logout</a>
+        {% else %}
+            <a href="{% url 'account_login' %}" class="text-white">Login</a>
+        {% endif %}
+    </span>
+</nav>
+<div class="container mt-4">
+    {% block content %}{% endblock %}
+</div>
+</body>
+</html>

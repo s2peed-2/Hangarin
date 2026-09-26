@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %}Notes{% endblock %}
+{% block content %}
+<h4>Notes</h4>
+<form method="get" class="row g-2 mb-3">
+    <div class="col-auto"><input type="text" name="q" value="{{ request.GET.q }}" placeholder="Search notes..." class="form-control"></div>
+    <div class="col-auto"><button type="submit" class="btn btn-primary">Search</button></div>
+</form>
+<table class="table table-striped">
+    <thead><tr><th>Task</th><th>Content</th><th>Created</th></tr></thead>
+    <tbody>
+        {% for note in notes %}
+        <tr>
+            <td>{{ note.task.title }}</td>
+            <td>{{ note.content|truncatewords:15 }}</td>
+            <td>{{ note.created_at }}</td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="3">No notes found.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
