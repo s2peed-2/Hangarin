@@ -1,19 +1,23 @@
-"""
-Django settings for the hangarin project.
-"""
-
+import os
+import socket
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'django-insecure-change-this-key-before-you-deploy'
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = os.environ.get(
+    'DJANGO_SECRET_KEY',
+    'django-insecure-change-this-key-before-you-deploy'  # local fallback only
+)
 
-DEBUG = True
+# Detect if we're running on PythonAnywhere
+ON_PYTHONANYWHERE = "pythonanywhere" in socket.gethostname()
 
-ALLOWED_HOSTS = []
+DEBUG = not ON_PYTHONANYWHERE
 
-
-# Application definition
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+if ON_PYTHONANYWHERE:
+    ALLOWED_HOSTS.append('cyrek2.pythonanywhere.com') 
 
 INSTALLED_APPS = [
     'django.contrib.admin',
