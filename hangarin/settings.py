@@ -1,5 +1,4 @@
 import os
-import socket
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -10,14 +9,18 @@ SECRET_KEY = os.environ.get(
     'django-insecure-change-this-key-before-you-deploy'  # local fallback only
 )
 
-# Detect if we're running on PythonAnywhere
-ON_PYTHONANYWHERE = "pythonanywhere" in socket.gethostname()
+# True only when running on PythonAnywhere
+ON_SERVER = os.path.exists('/home/cyrek2')
 
-DEBUG = not ON_PYTHONANYWHERE
-
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
-if ON_PYTHONANYWHERE:
-    ALLOWED_HOSTS.append('cyrek2.pythonanywhere.com') 
+if ON_SERVER:
+    DEBUG = False
+    SITE_ID = 2
+    ALLOWED_HOSTS = ['cyrek2.pythonanywhere.com']
+    CSRF_TRUSTED_ORIGINS = ['https://cyrek2.pythonanywhere.com']
+else:
+    DEBUG = True
+    SITE_ID = 1
+    ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -37,8 +40,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.github',
 ]
 
-SITE_ID = 1
-MIDDLEWARE = MIDDLEWARE = [
+MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -81,8 +83,6 @@ DATABASES = {
     }
 }
 
-
-
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
     {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
@@ -90,15 +90,10 @@ AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
-
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'Asia/Manila'
-
 USE_I18N = True
-
 USE_TZ = True
-
 
 STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
@@ -119,3 +114,13 @@ ACCOUNT_SIGNUP_FIELDS = [
     "password1*",
     "password2*",
 ]
+
+SOCIALACCOUNT_PROVIDERS = {
+    'github': {
+        'SCOPE': ['user:email'],
+    },
+    'google': {
+        'SCOPE': ['profile', 'email'],
+        'AUTH_PARAMS': {'access_type': 'online'},
+    },
+}
